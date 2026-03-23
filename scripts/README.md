@@ -21,4 +21,4 @@ Deux nouveaux paramètres ont étés ajoutés pour filtrer les séquences FASTA 
 - `--unclassified-out` : fichier `.fasta` qui contient les séquences dont le taxon n'a pas été identifié dans la base de données. C'est le fichier qu'on va lancer à nouveau des les bases de données suivantes.
 
 ## 04_KRK_UNIVEC_BUILD.sh
-Ce script nous a permis de créer la base de données "UNIVEC", utile pour identifier l'ADN humain et le trier comme bruit (il ne sera pas utile pour notre étude).
+Ce script nous a permis de créer la base de données `UNIVEC`, utile pour identifier l'ADN humain et le trier comme bruit (il ne sera pas utile pour notre étude).
