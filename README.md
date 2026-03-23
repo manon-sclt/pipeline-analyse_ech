@@ -1,2 +1,6 @@
-# pipeline-analyse_ech
-Centralisation des codes bash pour notre PTUT (pipeline de A à Z)
+# Pipeline bioinformatique
+Centralisation des codes et des résultats pour notre projet tutoré.
+
+## Présentation du projet
+
+## Résultats
