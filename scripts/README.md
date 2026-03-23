@@ -11,6 +11,7 @@ Ce script nous a permis d'installer l'outil **Kraken2** utilisé pour la classif
 ## 03_KRK_RUN.sh
 Ce script permet de lancer le run Kraken. Il est a modifié à chaque cycle :  
 - `#SBATCH --job-name` pour choisir le nom du job.
+- `#SBATCH --mem` plus élevé que 150G pour la base de données GTDB.
 - `DB` à modifier en choisissant la banque de donnée souhaitée.
 - `OUTPUT_DIR` pour changer le nom du dossier de sortie Kraken.
   
