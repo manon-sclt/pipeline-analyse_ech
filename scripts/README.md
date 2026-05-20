@@ -11,6 +11,7 @@ Ce script nous a permis d'installer l'outil **Kraken2** utilisé pour la classif
 ## 03_KRK_RUN.sh
 Ce script permet de lancer le run Kraken. Il est a modifié à chaque cycle :  
 - `#SBATCH --job-name` pour choisir le nom du job.
+- `#SBATCH --mem` plus élevé que 150G pour la base de données GTDB.
 - `DB` à modifier en choisissant la banque de donnée souhaitée.
 - `OUTPUT_DIR` pour changer le nom du dossier de sortie Kraken.
   
@@ -20,4 +21,4 @@ Deux nouveaux paramètres ont étés ajoutés pour filtrer les séquences FASTA 
 - `--unclassified-out` : fichier `.fasta` qui contient les séquences dont le taxon n'a pas été identifié dans la base de données. C'est le fichier qu'on va lancer à nouveau des les bases de données suivantes.
 
 ## 04_KRK_UNIVEC_BUILD.sh
-Ce script nous a permis de créer la base de données "UNIVEC", utile pour identifier l'ADN humain et le trier comme bruit (il ne sera pas utile pour notre étude).
+Ce script nous a permis de créer la base de données `UNIVEC`, utile pour identifier l'ADN humain et le trier comme bruit (il ne sera pas utile pour notre étude).
