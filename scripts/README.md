@@ -1,24 +1,36 @@
-# Scripts pour le projet
-Dans cette section nous présenterons les différents scripts qui nous on permit de réaliser la pipeline.  
-Toutes les étapes sont réalisées sur le cluster de calcul **GenOuest**.
+# Scripts used for the project
+In this section, we will present the various scripts that enabled us to build the pipeline.  
+All steps frome 00 to 08 were performed on the **GenOuest** computing cluster. The `Pipeline_01-05.sh` pipeline and `08_KRK_UNIVEC_BUILD.sh` script were created by our supervisor, Ms. Hubler Frédérique and her Master's 2 student.  
+The numbers "00" , "01", etc ., were added to the script names to indicate the order in which they should be used.
+______________________________________________________________________________________________________________________
 
-## 01_TRIMMING_CUTADAPT.sh
-Ce script n'a pas encore été ajouté.
+## 00_INSTALL_KRAKEN.sh
+This script allowed us to install the **Kraken2** tool, which is used for taxonomic classification, in our `kraken2_env` environment on the GenOuest cluster [Kraken2](https://github.com/DerrickWood/kraken2).
 
-## 02_INSTALL_KRAKEN.sh
-Ce script nous a permis d'installer l'outil **Kraken2** utilisé pour la classification taxonomique dans notre environnement `kraken2_env` sur GenOuest.
-
-## 03_KRK_RUN.sh
-Ce script permet de lancer le run Kraken. Il est a modifié à chaque cycle :  
-- `#SBATCH --job-name` pour choisir le nom du job.
-- `#SBATCH --mem` plus élevé que 150G pour la base de données GTDB.
-- `DB` à modifier en choisissant la banque de donnée souhaitée.
-- `OUTPUT_DIR` pour changer le nom du dossier de sortie Kraken.
+## Pipeline_01-05.sh
+**Note**: *This pipeline was entirely developed and executed by a Master's student at the University of Rennes as part of the ARMeRIE project. The cleaned FASTA files produced by this pipeline constitute the input data of our analyses.*  
   
-### Ajout de paramètres
-Deux nouveaux paramètres ont étés ajoutés pour filtrer les séquences FASTA :  
-- `--classified-out` : fichier `.fasta` qui contient les séquences ayant reçu une identification taxonomique dans la base de données sélectionnée.
-- `--unclassified-out` : fichier `.fasta` qui contient les séquences dont le taxon n'a pas été identifié dans la base de données. C'est le fichier qu'on va lancer à nouveau des les bases de données suivantes.
+The data preprocessing was carried out in five successive automated steps within a bash pipeline executed on the GENOUEST computing cluster (documentation available at: [doc Genouest](https://help.genouest.org/usage/cluster/)). The steps are described below in their order of execution.  
+  
+### Optical deduplication — 01_clumpify.sh
+ 
+The first step consists of removing optical and PCR duplicates using `Clumpify` (Bushnell, 2014; available at: [clumpify](https://sourceforge.net/projects/bbmap/)). Read pairs in compressed FASTQ format are processed with the following parameters: optical=t, dupedist=40 and dedupe=t. The dupedist=40 parameter corresponds to the maximum distance in pixels between two clusters on the Illumina flowcell beyond which two identical reads are not considered optical duplicates. This step reduces noise from sequencing artefacts.  
+ 
+### Adapter trimming — 02_cutadapt.sh
+ 
+Illumina adapter trimming is performed with `Cutadapt` (Martin, 2011; available at: [cutadapt](https://github.com/marcelm/cutadapt/)). The forward adapter (**AGATCGGAAGAGCACACGTCTGAACTCCAGTCA**) and reverse adapter (**AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT**) are removed with the following parameters: -O=4 (minimum overlap length), -e=0.4 (maximum error rate), -m=13 (minimum length of retained reads), -q=15 (minimum 3' quality score) and --trim-n (removal of N bases at extremities). These parameters were optimised for ancient DNA, characterised by short fragments and damage at sequence ends.
+ 
+### Paired-read merging — 03_leehom.sh
+ 
+The merging of R1 and R2 reads is performed with `leeHom` (Renaud et al., 2014; available at: [leeHom](https://github.com/grenaud/leeHom)), a tool specifically designed for ancient DNA (aDNA) processing. leeHom was selected because it outperforms generalist merging tools in the aDNA context, notably through its Bayesian probabilistic model that accounts for damage profiles of degraded DNA. The `--ancientdna` option is activated to adapt the merging parameters to aDNA characteristics. The same adapter sequences as for Cutadapt are provided.
+ 
+### Post-processing of merged reads — 04_clumpify_postmerge.sh
+ 
+A second deduplication pass is applied to the merged reads with `Clumpify` (Bushnell, 2014; dedupe=t, optical=t, dupedist=40, subs=0), to eliminate any residual duplicates resulting from the merging. A complexity filter is then applied with `BBDuk` (BBTools suite; entropy=0.7, entropywindow=50, entropyk=5), allowing the elimination of low-complexity sequences that could generate false positives during taxonomic assignment.  
+ 
+### Sequence clustering — 05_clustering.sh
+ 
+The merged and filtered reads are grouped into representative units (centroids) using `VSEARCH` (Rognes et al., 2016) with the --cluster_size command. An identity threshold of 96% (--id 0.96) is applied, in accordance with recommendations for aDNA. This step reduces redundancy while quantifying the relative abundance of each unique sequence.
 
-## 04_KRK_UNIVEC_BUILD.sh
-Ce script nous a permis de créer la base de données `UNIVEC`, utile pour identifier l'ADN humain et le trier comme bruit (il ne sera pas utile pour notre étude).
+## 08_KRK_UNKVEC_BUILD.sh
+This script was used by our supervisor to create the UNIVEC_human that allowed her to identified human DNA (contaminants) into our samples and to exclude it from our bioinformatics analyses.
