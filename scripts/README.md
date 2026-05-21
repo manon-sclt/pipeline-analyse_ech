@@ -1,6 +1,6 @@
 # Scripts used for the project
 In this section, we will present the various scripts that enabled us to build the pipeline.  
-All steps frome 00 to 08 were performed on the **GenOuest** computing cluster. The `Pipeline_01-05.sh` pipeline and `08_KRK_UNIVEC_BUILD.sh` script were created by our supervisor, Ms. Hubler Frédérique and her Master's 2 student.  
+All steps from 00 to 08 were performed on the **GenOuest** computing cluster. The `Pipeline_01-05.sh` pipeline and `08_KRK_UNIVEC_BUILD.sh` script were created by our supervisor, Ms. Hubler Frédérique and her Master's 2 student.  
 The numbers "00" , "01", etc ., were added to the script names to indicate the order in which they should be used.
 ______________________________________________________________________________________________________________________
 
@@ -33,4 +33,40 @@ A second deduplication pass is applied to the merged reads with `Clumpify` (Bush
 The merged and filtered reads are grouped into representative units (centroids) using `VSEARCH` (Rognes et al., 2016) with the --cluster_size command. An identity threshold of 96% (--id 0.96) is applied, in accordance with recommendations for aDNA. This step reduces redundancy while quantifying the relative abundance of each unique sequence.
 
 ## 08_KRK_UNKVEC_BUILD.sh
+
 This script was used by our supervisor to create the UNIVEC_human that allowed her to identified human DNA (contaminants) into our samples and to exclude it from our bioinformatics analyses.
+____________________________________________________________________________________________
+After this first part of the pipline, we had to run BLASTn on [Galaxy](https://usegalaxy.eu/) which allowed us to compare our unknown sequences to a reference database (NT NCBI 20 Aug. 2024). Galaxy generated `.tabular` output files that will serve as input files for the next step of our pipeline.  
+  
+## 09_extraction.sh 
+
+This homemade script allowed us to :
+ - Extract unique sequences associated to a specific TAXID with `extract_kraken_reads.py` (a special script from `KrakenTools`), including the subspecies (`--include-children`),
+ - Combine the biological replicats of the same strate (1 et 2),  
+ - Eliminate singletons often linked to sequencing errors by running the `filter_size.py` Python script.
+  
+**/!\ Note** : This script requires `Python3` with `Biopython` library ([https://biopython.org/](https://biopython.org/)), the `KrakenTools` library ([https://github.com/jenniferlu717/KrakenTools](https://github.com/jenniferlu717/KrakenTools)), and to place the local script `filter_size.py` located in the project root directory (or to modify the path in the variable `BASE="path/to/your/project"` inside the script).  
+
+## 10_pipeline_stats_bact.sh & 10_pipeline_stats_plant.sh
+
+This script automatises the entire post-processing workflow for BLAST output (`.tabular` files). Its primary purpose is to clean up raw species assignements, query the official NCBI taxonomy, and organize a "clean" dataset ready for statistical analysis (particularly in Rstudio).  
+Here are the main steps of the script :
+- Via an `awk` script, it removes common noise and frequent annotation artifacts from the databases (prefixes such as "**MAG :**" or "**TPA :**", statuses such as "**PREDICTED :**" or "**unclutured**", and extraneous textual content). It then isolates the list of unique genus,
+- Uses of `TaxonKit` to download de NCBI Taxonomy local database (if it is not already download), and then converts genus names to TAXID and retrieve the complete taxonomic lineage associated,
+- Scans the lineages, classifies organisms of interest and add a `A_Eliminer` tag to what is incorrect,
+- Applicates of security filters to reject invalid lines (name without genus/species, typo, etc.),
+- Generates a `resume_taxons.csv` files ready to use in Rstudio.
+  
+**/!\ Note** : This script requires `TaxonKit` available at [https://github.com/shenwei356/taxonkit/releases](https://github.com/shenwei356/taxonkit/releases).
+
+## 11_generer_matrice_dynamique.sh
+
+This script automatise the creation of a taxon abundance matrix (in **CSV** format) that cross-references the identified target plant/bacterial taxon with various historical periods (from the Mesolithic to the Middle Ages in our case). The generated files is formatted for immediate import into ecological statistics or data science packages (such as `vegan` or `ggplot2` in R).  
+Here are the main stepts of the script :
+- It cleans the plant/bacterial mapping dictionary (`dictionnaire_propre.csv`, an output file of the `10_pipeline_stats_bact.sh` or `10_pipeline_stats_plant.sh` script) to isolate the validated taxa (those not tagged `A_Eliminer`). It then generates a list of these target taxa on the fly, thereby avoiding the need to hard-code the names in the following scripts,
+- It writes the header for the final CSV file by creating a column for each chronological-cultural period,
+- Thoroughly scans the various BLAST ouput directories (dedicated ton each database selected) for all ecisting .tabular count files,
+- Via an `awk` script (`script_matrice.awk`), it will count the occurrences of each plant for each historical period and populate the matrix,
+- It deletes all the temporary files to leave only the final result.
+  
+**/!\ Note** : This script requires the presence of `script_matrice.awk`  located in the project root directory (or to precise its location inside the script).
