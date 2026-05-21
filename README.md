@@ -1,5 +1,5 @@
 # Bioinformatics pipeline
-This repository is a compilation of codes (Bash and R) for our supervised project. The team is composed by Ayoub KARROUCHI, Corentin LAOT and Manon SECLET, students in M1 BGE.
+This repository is a compilation of codes (Bash and R) for our supervised project. The team is composed by Ayoub KARROUCHI, Corentin LAOT and Manon SECLET, students in M1 BGE, Toulouse 3 University (France).
 
 ## Presentation of the project
 The initial research contributes to the **PADMé project** through the **ARMeRIE program**, which is part of a larger initiative launched in January 2021 by **Muriel VIDAL**, a teacher-researcher at the University of West Brittany in Brest (UBO). She oversees research activities within the “Archives Sédimentaires, Transferts, paléo-Environnements” team.  
