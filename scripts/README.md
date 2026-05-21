@@ -61,7 +61,7 @@ Here are the main steps of the script :
 
 ## 11_generer_matrice_dynamique.sh
 
-This script automatise the creation of a taxon abundance matrix (in **CSV** format) that cross-references the identified target plant/bacterial taxon with various historical periods (from the Mesolithic to the Middle Ages in our case). The generated files is formatted for immediate import into ecological statistics or data science packages (such as `vegan` or `ggplot2` in R).  
+This script automatises the creation of a taxon abundance matrix (in **CSV** format) that cross-references the identified target plant/bacterial taxon with various historical periods (from the Mesolithic to the Middle Ages in our case). The generated files is formatted for immediate import into ecological statistics or data science packages (such as `vegan` or `ggplot2` in R).  
 Here are the main stepts of the script :
 - It cleans the plant/bacterial mapping dictionary (`dictionnaire_propre.csv`, an output file of the `10_pipeline_stats_bact.sh` or `10_pipeline_stats_plant.sh` script) to isolate the validated taxa (those not tagged `A_Eliminer`). It then generates a list of these target taxa on the fly, thereby avoiding the need to hard-code the names in the following scripts,
 - It writes the header for the final CSV file by creating a column for each chronological-cultural period,
