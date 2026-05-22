@@ -5,7 +5,7 @@ The numbers "00" , "01", etc ., were added to the script names to indicate the o
 ______________________________________________________________________________________________________________________
 
 ## 00_INSTALL_KRAKEN.sh
-This script allowed us to install the **Kraken2** tool, which is used for taxonomic classification, in our `kraken2_env` environment on the GenOuest cluster [Kraken2](https://github.com/DerrickWood/kraken2).
+This script allowed us to install the **Kraken2** tool (Wood et al., 2019), which is used for taxonomic classification, in our `kraken2_env` environment on the GenOuest cluster [https://github.com/DerrickWood/kraken2)](https://github.com/DerrickWood/kraken2).
 
 ## Pipeline_01-05.sh
 **Note**: *This pipeline was entirely developed and executed by a Master's student at the University of Rennes as part of the ARMeRIE project. The cleaned FASTA files produced by this pipeline constitute the input data of our analyses.*  
@@ -26,11 +26,11 @@ The merging of R1 and R2 reads is performed with `leeHom` (Renaud et al., 2014; 
  
 ### Post-processing of merged reads — 04_clumpify_postmerge.sh
  
-A second deduplication pass is applied to the merged reads with `Clumpify` (Bushnell, 2014; dedupe=t, optical=t, dupedist=40, subs=0), to eliminate any residual duplicates resulting from the merging. A complexity filter is then applied with `BBDuk` (BBTools suite; entropy=0.7, entropywindow=50, entropyk=5), allowing the elimination of low-complexity sequences that could generate false positives during taxonomic assignment.  
+A second deduplication pass is applied to the merged reads with `Clumpify` (Bushnell, 2014; dedupe=t, optical=t, dupedist=40, subs=0), to eliminate any residual duplicates resulting from the merging. A complexity filter is then applied with `BBDuk` ([BBTools suite](https://github.com/bbushnell/BBTools/blob/master/bbduk.sh); entropy=0.7, entropywindow=50, entropyk=5), allowing the elimination of low-complexity sequences that could generate false positives during taxonomic assignment.  
  
 ### Sequence clustering — 05_clustering.sh
  
-The merged and filtered reads are grouped into representative units (centroids) using `VSEARCH` (Rognes et al., 2016) with the --cluster_size command. An identity threshold of 96% (--id 0.96) is applied, in accordance with recommendations for aDNA. This step reduces redundancy while quantifying the relative abundance of each unique sequence.
+The merged and filtered reads are grouped into representative units (centroids) using `VSEARCH` (Rognes et al., 2016; available at [VSEARCH](https://github.com/torognes/vsearch)) with the --cluster_size command. An identity threshold of 96% (--id 0.96) is applied, in accordance with recommendations for aDNA. This step reduces redundancy while quantifying the relative abundance of each unique sequence.
 
 ## 08_KRK_UNKVEC_BUILD.sh
 
@@ -70,3 +70,21 @@ Here are the main stepts of the script :
 - It deletes all the temporary files to leave only the final result.
   
 **/!\ Note** : This script requires the presence of `script_matrice.awk`  located in the project root directory (or to precise its location inside the script).
+_____________________________________________________________________
+# References
+
+- Bushnell, B. (2014). *BBMap : A Fast, Accurate, Splice-Aware Aligner.* https://escholarship.org/uc/item/1h3515gn  
+- Martin, M. (2011). *Cutadapt removes adapter sequences from high-throughput sequencing reads.* **EMBnet.Journal**, 17(1), 10‑12. https://doi.org/10.14806/ej.17.1.200  
+- Renaud, G., Stenzel, U., & Kelso, J. (2014). *leeHom : Adaptor trimming and merging for Illumina sequencing reads.* **Nucleic Acids Research**, 42(18), e141‑e141. https://doi.org/10.1093/nar/gku699  
+- Rognes, T., Flouri, T., Nichols, B., Quince, C., & Mahé, F. (2016a). *VSEARCH : A versatile open source tool for metagenomics.* **PeerJ**, 4, e2584. https://doi.org/10.7717/peerj.2584
+- Wood, D. E., Lu, J., & Langmead, B. (2019). *Improved metagenomic analysis with Kraken 2.* **Genome Biology**, 20(1), 257. https://doi.org/10.1186/s13059-019-1891-0), 2815‑2839  
+  
+## Licenses
+
+- `Cutadapt` is under [MIT License](https://github.com/marcelm/cutadapt?tab=MIT-1-ov-file).  
+- `BBTools` (`Clumpify` + `BBDuk`) [License](https://github.com/bbushnell/BBTools/tree/master?tab=License-1-ov-file#readme).  
+- `KrakenTools` [License](https://github.com/jenniferlu717/KrakenTools?tab=GPL-3.0-1-ov-file#readme).  
+- `leeHom` [License](https://github.com/grenaud/leeHom/blob/master/LICENSE).  
+- `VSEARCH` Licenses : [https://github.com/torognes/vsearch/blob/master/LICENSE.txt](https://github.com/torognes/vsearch/blob/master/LICENSE.txt); [https://github.com/torognes/vsearch/blob/master/LICENSE_GNU_GPL3.txt](https://github.com/torognes/vsearch/blob/master/LICENSE_GNU_GPL3.txt).  
+- `TaxonKit` is under [MIT License](https://github.com/shenwei356/taxonkit/blob/master/LICENSE).
+
