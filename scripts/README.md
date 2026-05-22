@@ -52,7 +52,7 @@ This homemade script allowed us to :
 This script automatises the entire post-processing workflow for BLAST output (`.tabular` files). Its primary purpose is to clean up raw species assignements, query the official NCBI taxonomy, and organize a "clean" dataset ready for statistical analysis (particularly in Rstudio).  
 Here are the main steps of the script :
 - Via an `awk` script, it removes common noise and frequent annotation artifacts from the databases (prefixes such as "**MAG :**" or "**TPA :**", statuses such as "**PREDICTED :**" or "**unclutured**", and extraneous textual content). It then isolates the list of unique genus,
-- Uses of `TaxonKit` to download de NCBI Taxonomy local database (if it is not already download), and then converts genus names to TAXID and retrieve the complete taxonomic lineage associated,
+- Uses of `TaxonKit` (Shen & Ren, 2021)  to download de NCBI Taxonomy local database (if it is not already download), and then converts genus names to TAXID and retrieve the complete taxonomic lineage associated,
 - Scans the lineages, classifies organisms of interest and add a `A_Eliminer` tag to what is incorrect,
 - Applicates of security filters to reject invalid lines (name without genus/species, typo, etc.),
 - Generates a `resume_taxons.csv` files ready to use in Rstudio.
@@ -75,6 +75,7 @@ _____________________________________________________________________
 
 - Bushnell, B. (2014). *BBMap : A Fast, Accurate, Splice-Aware Aligner.* https://escholarship.org/uc/item/1h3515gn  
 - Martin, M. (2011). *Cutadapt removes adapter sequences from high-throughput sequencing reads.* **EMBnet.Journal**, 17(1), 10‑12. https://doi.org/10.14806/ej.17.1.200  
+- Shen, W., & Ren, H. (2021). *TaxonKit : A practical and efficient NCBI taxonomy toolkit.* **Journal of Genetics and Genomics, Special issue on Microbiome**, 48(9), 844‑850. https://doi.org/10.1016/j.jgg.2021.03.006  
 - Renaud, G., Stenzel, U., & Kelso, J. (2014). *leeHom : Adaptor trimming and merging for Illumina sequencing reads.* **Nucleic Acids Research**, 42(18), e141‑e141. https://doi.org/10.1093/nar/gku699  
 - Rognes, T., Flouri, T., Nichols, B., Quince, C., & Mahé, F. (2016a). *VSEARCH : A versatile open source tool for metagenomics.* **PeerJ**, 4, e2584. https://doi.org/10.7717/peerj.2584
 - Wood, D. E., Lu, J., & Langmead, B. (2019). *Improved metagenomic analysis with Kraken 2.* **Genome Biology**, 20(1), 257. https://doi.org/10.1186/s13059-019-1891-0), 2815‑2839  
@@ -85,6 +86,6 @@ _____________________________________________________________________
 - `BBTools` (`Clumpify` + `BBDuk`) [License](https://github.com/bbushnell/BBTools/tree/master?tab=License-1-ov-file#readme).  
 - `KrakenTools` [License](https://github.com/jenniferlu717/KrakenTools?tab=GPL-3.0-1-ov-file#readme).  
 - `leeHom` [License](https://github.com/grenaud/leeHom/blob/master/LICENSE).  
-- `VSEARCH` Licenses : [https://github.com/torognes/vsearch/blob/master/LICENSE.txt](https://github.com/torognes/vsearch/blob/master/LICENSE.txt); [https://github.com/torognes/vsearch/blob/master/LICENSE_GNU_GPL3.txt](https://github.com/torognes/vsearch/blob/master/LICENSE_GNU_GPL3.txt).  
+- `VSEARCH` Licenses : [https://github.com/torognes/vsearch/blob/master/LICENSE.txt](https://github.com/torognes/vsearch/blob/master/LICENSE.txt) ; [https://github.com/torognes/vsearch/blob/master/LICENSE_GNU_GPL3.txt](https://github.com/torognes/vsearch/blob/master/LICENSE_GNU_GPL3.txt).  
 - `TaxonKit` is under [MIT License](https://github.com/shenwei356/taxonkit/blob/master/LICENSE).
 
