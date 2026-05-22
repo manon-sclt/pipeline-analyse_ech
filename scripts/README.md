@@ -86,6 +86,5 @@ _____________________________________________________________________
 - `BBTools` (`Clumpify` + `BBDuk`) [License](https://github.com/bbushnell/BBTools/tree/master?tab=License-1-ov-file#readme).  
 - `KrakenTools` [License](https://github.com/jenniferlu717/KrakenTools?tab=GPL-3.0-1-ov-file#readme).  
 - `leeHom` [License](https://github.com/grenaud/leeHom/blob/master/LICENSE).  
-- `VSEARCH` Licenses : [https://github.com/torognes/vsearch/blob/master/LICENSE.txt](https://github.com/torognes/vsearch/blob/master/LICENSE.txt) ; [https://github.com/torognes/vsearch/blob/master/LICENSE_GNU_GPL3.txt](https://github.com/torognes/vsearch/blob/master/LICENSE_GNU_GPL3.txt).  
 - `TaxonKit` is under [MIT License](https://github.com/shenwei356/taxonkit/blob/master/LICENSE).
-
+- `VSEARCH` Licenses : [https://github.com/torognes/vsearch/blob/master/LICENSE.txt](https://github.com/torognes/vsearch/blob/master/LICENSE.txt) ; [https://github.com/torognes/vsearch/blob/master/LICENSE_GNU_GPL3.txt](https://github.com/torognes/vsearch/blob/master/LICENSE_GNU_GPL3.txt).  
